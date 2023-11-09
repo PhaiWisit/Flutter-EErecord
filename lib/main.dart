@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
-import 'package:ee_record_mvvm/view_models/register_view_model.dart';
-import 'package:ee_record_mvvm/view_models/visitors_view_model.dart';
-import 'package:ee_record_mvvm/views/home_screen.dart';
+import 'package:ee_record_mvvm/providers/record_provider.dart';
+import 'package:ee_record_mvvm/providers/visitors_provider.dart';
+import 'package:ee_record_mvvm/views/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => VisitorsViewModel()),
-        ChangeNotifierProvider(create: (_) => RegisterViewModel()),
+        ChangeNotifierProvider(create: (_) => VisitorsProvider()),
+        ChangeNotifierProvider(create: (_) => RecordProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

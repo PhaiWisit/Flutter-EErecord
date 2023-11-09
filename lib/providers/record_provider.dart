@@ -1,17 +1,17 @@
-import 'package:ee_record_mvvm/models/register_error.dart';
+import 'package:ee_record_mvvm/models/record_error.dart';
 import 'package:ee_record_mvvm/models/visitor_list_model.dart';
 import 'package:ee_record_mvvm/services/api_status.dart';
 import 'package:ee_record_mvvm/services/visitor_service.dart';
 import 'package:flutter/foundation.dart';
 
-class RegisterViewModel extends ChangeNotifier {
+class RecordProvider extends ChangeNotifier {
   bool _loading = false;
   bool _isBack = false;
-  RegisterError _registerError = RegisterError(code: 0, massage: 'massage');
+  RecordError _recordError = RecordError(code: 0, massage: 'massage');
 
   bool get loading => _loading;
   bool get isBack => _isBack;
-  RegisterError get registerError => _registerError;
+  RecordError get recordError => _recordError;
 
   setLoading(bool loading) async {
     _loading = loading;
@@ -23,8 +23,8 @@ class RegisterViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  setRegisterError(RegisterError registerError) {
-    _registerError = registerError;
+  setRecordError(RecordError recordError) {
+    _recordError = recordError;
   }
 
   Future<void> uploadAll(VisitorModel body) async {
@@ -36,9 +36,9 @@ class RegisterViewModel extends ChangeNotifier {
       setIsBack(true);
     }
     if (response is Failure) {
-      RegisterError registerError = RegisterError(
+      RecordError recordError = RecordError(
           code: response.code, massage: response.errorResponse.toString());
-      setRegisterError(registerError);
+      setRecordError(recordError);
       print('failure');
     }
     setLoading(false);

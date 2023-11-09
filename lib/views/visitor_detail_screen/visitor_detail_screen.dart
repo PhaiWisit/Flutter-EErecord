@@ -1,7 +1,7 @@
 import 'package:ee_record_mvvm/components/loading_widget.dart';
 import 'package:ee_record_mvvm/components/visitor_detail_time_active.dart';
 import 'package:ee_record_mvvm/utils/app_color.dart';
-import 'package:ee_record_mvvm/view_models/visitors_view_model.dart';
+import 'package:ee_record_mvvm/providers/visitors_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,7 +11,7 @@ class VisitorDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    VisitorsViewModel visitorsViewModel = context.watch<VisitorsViewModel>();
+    VisitorsProvider visitorsProvider = context.watch<VisitorsProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text('ข้อมูลผู้มาติดต่อ'),
@@ -24,11 +24,11 @@ class VisitorDetailScreen extends StatelessWidget {
         ),
         child: ListView(
           children: [
-            container_houseNumber(visitorsViewModel),
-            container_contractMatter(visitorsViewModel),
-            container_datetime(visitorsViewModel),
-            container_idcard(visitorsViewModel),
-            container_plate(visitorsViewModel)
+            container_houseNumber(visitorsProvider),
+            container_contractMatter(visitorsProvider),
+            container_datetime(visitorsProvider),
+            container_idcard(visitorsProvider),
+            container_plate(visitorsProvider)
           ],
         ),
       ),
@@ -42,7 +42,7 @@ class VisitorDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget container_houseNumber(VisitorsViewModel visitorsViewModel) {
+  Widget container_houseNumber(VisitorsProvider visitorsProvider) {
     return SizedBox(
       height: 100,
       child: Row(
@@ -57,11 +57,11 @@ class VisitorDetailScreen extends StatelessWidget {
                 height: 100,
                 child: Column(
                   children: [
-                    visitorsViewModel.selectedVisitor.visitorVehicleType ==
+                    visitorsProvider.selectedVisitor.visitorVehicleType ==
                             'รถยนต์'
                         ? Image.asset('assets/images/icon_car.png')
                         : Image.asset('assets/images/icon_bike.png'),
-                    Text(visitorsViewModel.selectedVisitor.visitorVehicleType +
+                    Text(visitorsProvider.selectedVisitor.visitorVehicleType +
                         ' ')
                   ],
                 ),
@@ -89,7 +89,7 @@ class VisitorDetailScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 16),
                       ),
                       Text(
-                        visitorsViewModel.selectedVisitor.visitorHouseNumber
+                        visitorsProvider.selectedVisitor.visitorHouseNumber
                             .toString(),
                         style: TextStyle(fontSize: 20),
                       )
@@ -104,7 +104,7 @@ class VisitorDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget container_contractMatter(VisitorsViewModel visitorsViewModel) {
+  Widget container_contractMatter(VisitorsProvider visitorsProvider) {
     return SizedBox(
       height: 80,
       child: Row(
@@ -124,7 +124,7 @@ class VisitorDetailScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
-                        visitorsViewModel.selectedVisitor.visitorContactMatter +
+                        visitorsProvider.selectedVisitor.visitorContactMatter +
                             ' ',
                         style: TextStyle(fontSize: 20),
                         softWrap: false,
@@ -140,7 +140,7 @@ class VisitorDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget container_datetime(VisitorsViewModel visitorsViewModel) {
+  Widget container_datetime(VisitorsProvider visitorsProvider) {
     return SizedBox(
       height: 120,
       child: Row(
@@ -163,7 +163,7 @@ class VisitorDetailScreen extends StatelessWidget {
                               height: 30,
                               width: 100,
                               child: Center(
-                                child: Text(visitorsViewModel
+                                child: Text(visitorsProvider
                                     .selectedVisitor.visitorStatus),
                               ),
                             ),
@@ -171,7 +171,7 @@ class VisitorDetailScreen extends StatelessWidget {
                                 height: 30,
                                 child: VisitorDetailTimeActive(
                                   visitorModel:
-                                      visitorsViewModel.selectedVisitor,
+                                      visitorsProvider.selectedVisitor,
                                 ))
                           ],
                         ),
@@ -181,10 +181,10 @@ class VisitorDetailScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text("เข้า " +
-                                visitorsViewModel
+                                visitorsProvider
                                     .selectedVisitor.visitorDateEntry +
                                 " " +
-                                visitorsViewModel
+                                visitorsProvider
                                     .selectedVisitor.visitorTimeEntry)
                           ],
                         ),
@@ -193,14 +193,14 @@ class VisitorDetailScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            visitorsViewModel.selectedVisitor.visitorDateExit ==
+                            visitorsProvider.selectedVisitor.visitorDateExit ==
                                     ''
                                 ? Text('ยังอยู่ในหมู่บ้าน')
                                 : Text("ออก " +
-                                    visitorsViewModel
+                                    visitorsProvider
                                         .selectedVisitor.visitorDateExit +
                                     " " +
-                                    visitorsViewModel
+                                    visitorsProvider
                                         .selectedVisitor.visitorTimeExit)
                           ],
                         ),
@@ -214,7 +214,7 @@ class VisitorDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget container_idcard(VisitorsViewModel visitorsViewModel) {
+  Widget container_idcard(VisitorsProvider visitorsProvider) {
     return SizedBox(
       height: 180,
       child: Row(
@@ -239,7 +239,7 @@ class VisitorDetailScreen extends StatelessWidget {
                           color: color1White,
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                       child: CachedNetworkImage(
-                        imageUrl: visitorsViewModel
+                        imageUrl: visitorsProvider
                             .selectedVisitor.visitorImagePathIdCard,
                         placeholder: (context, url) => LoadingWidget(
                           isImage: true,
@@ -257,7 +257,7 @@ class VisitorDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget container_plate(VisitorsViewModel visitorsViewModel) {
+  Widget container_plate(VisitorsProvider visitorsProvider) {
     return SizedBox(
       height: 180,
       child: Row(
@@ -279,7 +279,7 @@ class VisitorDetailScreen extends StatelessWidget {
                           color: color1White,
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                       child: CachedNetworkImage(
-                        imageUrl: visitorsViewModel
+                        imageUrl: visitorsProvider
                             .selectedVisitor.visitorImagePathCarRegis,
                         placeholder: (context, url) => LoadingWidget(
                           isImage: true,

@@ -4,7 +4,7 @@ import 'package:ee_record_mvvm/models/visitor_list_model.dart';
 import 'package:ee_record_mvvm/utils/app_color.dart';
 import 'package:ee_record_mvvm/utils/function.dart';
 import 'package:ee_record_mvvm/utils/navigation.dart';
-import 'package:ee_record_mvvm/view_models/visitors_view_model.dart';
+import 'package:ee_record_mvvm/providers/visitors_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +12,7 @@ class HomeTabInactive extends StatelessWidget {
   const HomeTabInactive({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    VisitorsViewModel visitorsViewModel = context.watch<VisitorsViewModel>();
+    VisitorsProvider visitorsViewModel = context.watch<VisitorsProvider>();
 
     if (visitorsViewModel.loading) {
       return Apploading();
@@ -53,7 +53,7 @@ class HomeTabInactive extends StatelessWidget {
   Widget _cardInactive(
       {required BuildContext context,
       required int index,
-      required VisitorsViewModel visitorsViewModel}) {
+      required VisitorsProvider visitorsViewModel}) {
     return Card(
       child: Container(
         decoration: BoxDecoration(

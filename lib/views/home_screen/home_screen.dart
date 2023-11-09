@@ -1,10 +1,11 @@
 import 'package:camera/camera.dart';
-import 'package:ee_record_mvvm/components/home_tab_active.dart';
-import 'package:ee_record_mvvm/components/home_tab_inactive.dart';
 import 'package:ee_record_mvvm/utils/app_color.dart';
 import 'package:ee_record_mvvm/utils/function.dart';
 import 'package:ee_record_mvvm/utils/navigation.dart';
 import 'package:flutter/material.dart';
+
+import 'widgets/home_tab_active.dart';
+import 'widgets/home_tab_inactive.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key, required this.camera}) : super(key: key);

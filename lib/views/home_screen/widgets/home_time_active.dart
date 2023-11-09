@@ -1,4 +1,4 @@
-import 'package:ee_record_mvvm/view_models/visitors_view_model.dart';
+import 'package:ee_record_mvvm/providers/visitors_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -8,7 +8,7 @@ class HomeTimeActive extends StatefulWidget {
       : super(key: key);
 
   final int index;
-  final VisitorsViewModel visitorsViewModel;
+  final VisitorsProvider visitorsViewModel;
 
   @override
   State<HomeTimeActive> createState() => _HomeTimeActiveState();

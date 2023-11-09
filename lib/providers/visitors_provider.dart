@@ -4,7 +4,7 @@ import 'package:ee_record_mvvm/services/api_status.dart';
 import 'package:ee_record_mvvm/services/visitor_service.dart';
 import 'package:flutter/foundation.dart';
 
-class VisitorsViewModel extends ChangeNotifier {
+class VisitorsProvider extends ChangeNotifier {
   bool _loading = false;
   List<VisitorModel> _visitorListModel = [];
   List<VisitorModel> _visitorActive = [];
@@ -19,7 +19,7 @@ class VisitorsViewModel extends ChangeNotifier {
   VisitorError get visitorError => _visitorError;
   VisitorModel get selectedVisitor => _selectedVisitor!;
 
-  VisitorsViewModel() {
+  VisitorsProvider() {
     // getVisitor();
     getVisitorActive();
     getVisitorInactive();

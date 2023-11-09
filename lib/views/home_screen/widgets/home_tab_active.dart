@@ -1,20 +1,21 @@
 import 'package:ee_record_mvvm/components/app_error.dart';
 import 'package:ee_record_mvvm/components/app_loading.dart';
-import 'package:ee_record_mvvm/components/home_time_active.dart';
 import 'package:ee_record_mvvm/models/visitor_list_model.dart';
 import 'package:ee_record_mvvm/utils/app_color.dart';
 import 'package:ee_record_mvvm/utils/function.dart';
 import 'package:ee_record_mvvm/utils/navigation.dart';
-import 'package:ee_record_mvvm/view_models/visitors_view_model.dart';
+import 'package:ee_record_mvvm/providers/visitors_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'home_time_active.dart';
 
 class HomeTabActive extends StatelessWidget {
   const HomeTabActive({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    VisitorsViewModel visitorsViewModel = context.watch<VisitorsViewModel>();
+    VisitorsProvider visitorsViewModel = context.watch<VisitorsProvider>();
 
     if (visitorsViewModel.loading) {
       return Apploading();
@@ -55,7 +56,7 @@ class HomeTabActive extends StatelessWidget {
   Widget _cardActive(
       {required BuildContext context,
       required int index,
-      required VisitorsViewModel visitorsViewModel}) {
+      required VisitorsProvider visitorsViewModel}) {
     return Card(
       child: Container(
         decoration: BoxDecoration(

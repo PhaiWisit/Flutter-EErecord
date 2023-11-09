@@ -4,24 +4,27 @@ import 'package:ee_record_mvvm/components/app_loading.dart';
 import 'package:ee_record_mvvm/models/visitor_list_model.dart';
 import 'package:ee_record_mvvm/utils/app_color.dart';
 import 'package:ee_record_mvvm/utils/navigation.dart';
-import 'package:ee_record_mvvm/view_models/register_view_model.dart';
-import 'package:ee_record_mvvm/views/takepicture_idcard_screen.dart';
-import 'package:ee_record_mvvm/views/takepicture_plate_screen.dart';
+import 'package:ee_record_mvvm/providers/record_provider.dart';
+import 'package:ee_record_mvvm/views/takepic_idcard_screen/takepicture_idcard_screen.dart';
+import 'package:ee_record_mvvm/views/takepic_plate_screen/takepicture_plate_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key, required this.camera}) : super(key: key);
+import 'widgets/container_head.dart';
+import 'widgets/container_home.dart';
+
+class RecordScreen extends StatefulWidget {
+  const RecordScreen({Key? key, required this.camera}) : super(key: key);
   final CameraDescription camera;
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RecordScreen> createState() => _RecordScreenState();
 }
 
 enum SingingCharacter { car, motocycle }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RecordScreenState extends State<RecordScreen> {
   var houseNumber_controller = TextEditingController();
   var about_controller = TextEditingController();
 
@@ -66,7 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    RegisterViewModel registerViewModel = context.watch<RegisterViewModel>();
+    RecordProvider recordProvider = context.watch<RecordProvider>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('ระบบบันทึกการเข้าออกหมู่บ้าน'),
@@ -80,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _containerHead(),
+              ContainerHead(), // บันทึกข้อมูลผู้มาติดต่อ
               _space(5),
               Image.asset('assets/images/icon_house.png'),
               Padding(
@@ -100,7 +103,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                _containerHome(),
+                                // บ้านเลขที่
+                                ContainerHome(
+                                    houseNumber_controller:
+                                        houseNumber_controller,
+                                    textStyle_black_20: textStyle_black_20),
                               ],
                             ),
                           ),
@@ -151,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               children: [_containerPictureLicenesePlate()],
                             ),
                           ),
-                          _containerSubmit(registerViewModel),
+                          _containerSubmit(recordProvider),
                         ],
                       ),
                     ),
@@ -177,71 +184,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
       backgroundColor: color1Grey,
-    );
-  }
-
-  // บันทึกข้อมูลผู้มาติดต่อ
-  Widget _containerHead() {
-    return Transform.translate(
-      offset: Offset(0, 0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: color1DeepBlue,
-        ),
-        height: 100,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(8.0),
-                  topRight: Radius.circular(8.0),
-                ),
-                child: Image.asset(
-                  'assets/resource/logo.png',
-                  fit: BoxFit.fitHeight,
-                  height: 70,
-                  width: 70,
-                ),
-              ),
-            ),
-            Text(
-              " บันทึกข้อมูลผู้มาติดต่อ",
-              style: TextStyle(color: color1White, fontSize: 20),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  // บ้านเลขที่
-  Widget _containerHome() {
-    return Expanded(
-      flex: 7,
-      child: Container(
-        decoration: BoxDecoration(
-          color: color1White,
-          borderRadius: BorderRadius.all(Radius.circular(4)),
-        ),
-        child: TextField(
-          controller: houseNumber_controller,
-          style: textStyle_black_20,
-          decoration: InputDecoration(
-            hintText: 'ใส่บ้านเลขที่',
-            hintStyle: TextStyle(color: Color.fromARGB(255, 160, 160, 160)),
-            labelStyle: textStyle_black_20,
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-            suffixIcon: IconButton(
-              onPressed: houseNumber_controller.clear,
-              icon: const Icon(Icons.clear),
-            ),
-          ),
-          keyboardType: TextInputType.number,
-        ),
-      ),
     );
   }
 
@@ -483,8 +425,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   // ปุ่มบันทึก
-  Widget _containerSubmit(RegisterViewModel registerViewModel) {
-    if (registerViewModel.loading) {
+  Widget _containerSubmit(RecordProvider recordProvider) {
+    if (recordProvider.loading) {
       return Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(),
@@ -691,10 +633,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           visitorImagePathIdCard: _imagePathIdCard,
           visitorImagePathCarRegis: _imagePathCarRegis);
 
-      var registerViewModel =
-          Provider.of<RegisterViewModel>(context, listen: false);
-      await registerViewModel.uploadAll(visitorModel);
-      if (registerViewModel.isBack) {
+      var recordProvider = Provider.of<RecordProvider>(context, listen: false);
+      await recordProvider.uploadAll(visitorModel);
+      if (recordProvider.isBack) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             duration: Duration(milliseconds: 500),
@@ -705,12 +646,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
         backToHome(context, widget.camera);
-      } else if (registerViewModel.registerError.code != 0) {
+      } else if (recordProvider.recordError.code != 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             duration: Duration(milliseconds: 500),
             content: Text(
-              "ERROR : " + registerViewModel.registerError.massage,
+              "ERROR : " + recordProvider.recordError.massage,
               style: TextStyle(color: color1White, fontSize: 16),
             ),
           ),
