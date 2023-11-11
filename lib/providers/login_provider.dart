@@ -51,9 +51,9 @@ class LoginProvider extends ChangeNotifier {
       setLoginToken(loginToken);
 
       await prefs.setString('accessToken', loginToken.accessToken);
-      String? accessToken = '0';
-      accessToken = prefs.getString('accessToken');
-      log(accessToken!);
+      // String? accessToken = '0';
+      // accessToken = prefs.getString('accessToken');
+      // log(accessToken!);
 
       setIsLogged(true);
     }
