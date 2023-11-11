@@ -1,10 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:ee_record_mvvm/providers/record_provider.dart';
 import 'package:ee_record_mvvm/providers/visitors_provider.dart';
-import 'package:ee_record_mvvm/views/home_screen/home_screen.dart';
 import 'package:ee_record_mvvm/views/login_screen/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';

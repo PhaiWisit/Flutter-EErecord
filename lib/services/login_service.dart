@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:ee_record_mvvm/services/api_status.dart';
 import 'package:ee_record_mvvm/utils/constants.dart';
 import 'package:http/http.dart' as http;

@@ -85,7 +85,7 @@ class TakePictureScreenLicensePlateState
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            primary:
+                            backgroundColor:
                                 !flash_status ? Colors.white : Colors.amber),
                         child: Text(
                           "Flash",
@@ -246,7 +246,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             height: 50,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: color1Yellow,
+                backgroundColor: color1Yellow,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),

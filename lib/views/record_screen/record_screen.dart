@@ -441,7 +441,7 @@ class _RecordScreenState extends State<RecordScreen> {
                 height: 60,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: color1Yellow,
+                    backgroundColor: color1Yellow,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -469,7 +469,7 @@ class _RecordScreenState extends State<RecordScreen> {
                 height: 60,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: color1Yellow,
+                    backgroundColor: color1Yellow,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),

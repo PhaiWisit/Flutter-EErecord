@@ -1,14 +1,10 @@
-import 'dart:convert';
 import 'dart:developer';
-
 import 'package:ee_record_mvvm/models/login_error.dart';
 import 'package:ee_record_mvvm/models/login_token_model.dart';
 import 'package:ee_record_mvvm/services/login_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../services/api_status.dart';
-
 class LoginProvider extends ChangeNotifier {
   bool _loading = false;
   bool _isLogged = false;
@@ -19,8 +15,6 @@ class LoginProvider extends ChangeNotifier {
   bool get isLogged => _isLogged;
   LoginTokenModel get loginTokenmodel => _loginTokenModel;
   LoginError get loginError => _loginError;
-
-  LoginProvider() {}
 
   setLoginToken(LoginTokenModel loginTokenModel) {
     _loginTokenModel = loginTokenModel;

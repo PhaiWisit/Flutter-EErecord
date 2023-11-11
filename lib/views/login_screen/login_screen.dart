@@ -1,33 +1,16 @@
-import 'dart:developer';
-
 import 'package:camera/camera.dart';
-import 'package:dio/dio.dart';
-import 'package:ee_record_mvvm/components/app_loading.dart';
-import 'package:ee_record_mvvm/components/loading_widget.dart';
-import 'package:ee_record_mvvm/models/login_error.dart';
-import 'package:ee_record_mvvm/models/login_token_model.dart';
 import 'package:ee_record_mvvm/providers/login_provider.dart';
-import 'package:ee_record_mvvm/services/login_service.dart';
 import 'package:ee_record_mvvm/utils/app_color.dart';
-import 'package:ee_record_mvvm/utils/constants.dart';
 import 'package:ee_record_mvvm/views/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-
-import '../../services/api_status.dart';
-
-// import 'home.dart';
-// import 'signup.dart';
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key, required this.camera}) : super(key: key);
   final CameraDescription camera;
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
@@ -37,12 +20,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _obscurePassword = true;
   final Box _boxLogin = Hive.box("login");
-  final Box _boxAccounts = Hive.box("accounts");
+  // final Box _boxAccounts = Hive.box("accounts");
 
   @override
   Widget build(BuildContext context) {
     if (_boxLogin.get("loginStatus") ?? false) {
-      // return Home();
     }
 
     return Scaffold(

@@ -103,8 +103,7 @@ class TakePictureIdCardScreenState extends State<TakePictureIdCardScreen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            primary:
-                                !flash_status ? Colors.white : Colors.amber),
+                            backgroundColor: !flash_status ? Colors.white : Colors.amber),
                         child: Text(
                           "Flash",
                           style: TextStyle(
@@ -209,7 +208,7 @@ class DisplayPictureScreen extends StatelessWidget {
             height: 50,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: color1Yellow,
+                backgroundColor: color1Yellow,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),

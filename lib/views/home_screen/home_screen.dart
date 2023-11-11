@@ -117,7 +117,7 @@ class HomeScreen extends StatelessWidget {
           color: color1Grey,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: color1DeepBlue,
+              backgroundColor: color1DeepBlue,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -128,10 +128,13 @@ class HomeScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.add),
+                Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
                 Text(
                   'เพิ่มผู้มาติดต่อ',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ],
             ),
