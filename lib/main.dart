@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:ee_record_mvvm/providers/record_provider.dart';
 import 'package:ee_record_mvvm/providers/visitors_provider.dart';
-import 'package:ee_record_mvvm/views/login_screen/login_screen.dart';
+import 'package:ee_record_mvvm/views/loading_screen/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
@@ -45,7 +45,9 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: LoginScreen(camera: camera)
+          home: LoadingScreen(camera: camera)
+
+          // LoginScreen(camera: camera)
           //   HomeScreen(
           // camera: camera,
           // ),

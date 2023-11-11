@@ -5,10 +5,12 @@ import 'package:ee_record_mvvm/services/login_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api_status.dart';
+
 class LoginProvider extends ChangeNotifier {
   bool _loading = false;
   bool _isLogged = false;
-  LoginTokenModel _loginTokenModel = LoginTokenModel(accessToken: '0');
+  LoginTokenModel _loginTokenModel =
+      LoginTokenModel(accessToken: '0', username: '0');
   LoginError _loginError = LoginError(code: 0, massage: 'error');
 
   bool get loading => _loading;
@@ -40,14 +42,19 @@ class LoginProvider extends ChangeNotifier {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var response = await LoginService.login(username, password);
     if (response is Success) {
-      LoginTokenModel loginTokenModel =
-          LoginTokenModel.fromRawJson(response.response.toString());
+      String rawRes = response.response.toString();
+      if (rawRes.isNotEmpty) {
+        rawRes = rawRes.substring(0, rawRes.length - 1);
+      }
+      String rawJson = "$rawRes,\"username\" : \"$username\"}";
+      LoginTokenModel loginToken = LoginTokenModel.fromRawJson(rawJson);
+      setLoginToken(loginToken);
 
-      // await prefs.setString('accessToken', loginTokenModel.accessToken);
+      await prefs.setString('accessToken', loginToken.accessToken);
       String? accessToken = '0';
       accessToken = prefs.getString('accessToken');
       log(accessToken!);
-      setLoginToken(loginTokenModel);
+
       setIsLogged(true);
     }
     if (response is Failure) {

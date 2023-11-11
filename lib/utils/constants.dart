@@ -9,6 +9,7 @@ const String AIFORTHAI_API_KEY = 'YOUR API KEY';
 
 const String NEST_LOCAL_SERVER = 'http://192.168.1.105:5000';
 const String NEST_LOGIN = '/auth/login';
+const String NEST_PROFILE = '/auth/profile';
 
 //Status
 const SUCCESS = 200;
