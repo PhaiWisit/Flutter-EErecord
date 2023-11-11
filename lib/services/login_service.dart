@@ -9,35 +9,8 @@ import 'package:ee_record_mvvm/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class LoginService {
+  
   static Future<Object> login(username, password) async {
-    final dio = Dio();
-    try {
-      var response = await dio.post(NEST_LOCAL_SERVER + NEST_LOGIN,
-          data: {'username': username, 'password': password});
-
-      log(response.statusCode.toString());
-      if (SUCCESS == response.statusCode) {
-        return Success(code: SUCCESS, response: response);
-      } else if (response.statusCode == 400) {
-        log('Invalid User');
-        return Failure(
-            code: USER_INVALID_RESPONSE, errorResponse: 'Invalid Response');
-      } else {
-        return Failure(
-            code: USER_INVALID_RESPONSE, errorResponse: 'Invalid Response');
-      }
-    } on DioException catch (e) {
-      return Failure(code: NO_INTERNET, errorResponse: 'Bad Request');
-    } on SocketException {
-      return Failure(code: NO_INTERNET, errorResponse: 'No Internet');
-    } on FormatException {
-      return Failure(code: INVALID_FORMAT, errorResponse: 'Invalid Format');
-    } catch (e) {
-      return Failure(code: UNKNOWN_ERROR, errorResponse: 'Unknown Error');
-    }
-  }
-
-  static Future<Object> login2(username, password) async {
     var client = http.Client();
     try {
       var postUri = Uri.parse(NEST_LOCAL_SERVER + NEST_LOGIN);

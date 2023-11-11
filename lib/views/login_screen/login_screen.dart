@@ -176,27 +176,34 @@ class _LoginScreenState extends State<LoginScreen> {
                           await loginState.login(_controllerUsername.text,
                               _controllerPassword.text);
 
-                          String errorMessage = 'เกิดข้อผิดพลาด';
-                          switch (loginState.loginError.code) {
-                            case 400:
-                              errorMessage = 'ไม่พบบัญชีผู้ใช้';
-                              break;
-                            case 401:
-                              errorMessage = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
-                              break;
-                            case 408:
-                              errorMessage = 'หมดเวลาเชื่อมต่อ';
-                              break;
-                            default:
-                              errorMessage = 'เกิดข้อผิดพลาด';
-                              break;
-                          }
-                          final snackBar = SnackBar(
-                            content: Text(errorMessage),
-                            duration: Duration(seconds: 2),
-                          );
+                          if (!loginState.isLogged) {
+                            String errorMessage = 'เกิดข้อผิดพลาด';
+                            switch (loginState.loginError.code) {
+                              case 200:
+                                errorMessage = 'เข้าสู่ระบบแล้ว';
+                                break;
+                              case 400:
+                                errorMessage = 'ไม่พบบัญชีผู้ใช้';
+                                break;
+                              case 401:
+                                errorMessage =
+                                    'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+                                break;
+                              case 408:
+                                errorMessage = 'หมดเวลาเชื่อมต่อ';
+                                break;
+                              default:
+                                errorMessage = 'เกิดข้อผิดพลาด';
+                                break;
+                            }
+                            final snackBar = SnackBar(
+                              content: Text(errorMessage),
+                              duration: Duration(seconds: 2),
+                            );
 
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
 
                           if (loginState.isLogged) {
                             Navigator.pushReplacement(
