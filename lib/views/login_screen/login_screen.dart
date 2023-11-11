@@ -1,14 +1,28 @@
+import 'dart:developer';
+
+import 'package:camera/camera.dart';
+import 'package:dio/dio.dart';
+import 'package:ee_record_mvvm/components/app_loading.dart';
+import 'package:ee_record_mvvm/components/loading_widget.dart';
+import 'package:ee_record_mvvm/models/login_error.dart';
+import 'package:ee_record_mvvm/models/login_token_model.dart';
+import 'package:ee_record_mvvm/providers/login_provider.dart';
+import 'package:ee_record_mvvm/services/login_service.dart';
 import 'package:ee_record_mvvm/utils/app_color.dart';
+import 'package:ee_record_mvvm/utils/constants.dart';
+import 'package:ee_record_mvvm/views/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+
+import '../../services/api_status.dart';
 
 // import 'home.dart';
 // import 'signup.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({
-    Key? key,
-  }) : super(key: key);
+  const LoginScreen({Key? key, required this.camera}) : super(key: key);
+  final CameraDescription camera;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -81,18 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: Colors.grey),
                   ),
-                  // enabledBorder: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(10),
-                  // ),
                 ),
                 onEditingComplete: () => _focusNodePassword.requestFocus(),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "กรุณาใส่ชื่อผู้ใช้";
-                  } else if (!_boxAccounts.containsKey(value)) {
-                    return "ไม่พบบัญชีผู้ใช้ของคุณ";
                   }
-
                   return null;
                 },
               ),
@@ -142,41 +150,75 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "กรุณาใส่รหัสผ่าน";
-                  } else if (value !=
-                      _boxAccounts.get(_controllerUsername.text)) {
-                    return "Wrong password.";
                   }
-
                   return null;
                 },
               ),
               const SizedBox(height: 60),
               Column(
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                  Consumer<LoginProvider>(
+                      builder: ((context, loginState, child) {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                       ),
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        _boxLogin.put("loginStatus", true);
-                        _boxLogin.put("userName", _controllerUsername.text);
+                      onPressed: () async {
+                        ScaffoldMessenger.of(context).clearSnackBars();
 
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) {
-                        //       return Home();
-                        //     },
-                        //   ),
-                        // );
-                      }
-                    },
-                    child: const Text("เข้าสู่ระบบ"),
-                  ),
+                        if (_formKey.currentState?.validate() ?? false) {
+                          _boxLogin.put("loginStatus", true);
+                          _boxLogin.put("userName", _controllerUsername.text);
+
+                          await loginState.login(_controllerUsername.text,
+                              _controllerPassword.text);
+
+                          String errorMessage = 'เกิดข้อผิดพลาด';
+                          switch (loginState.loginError.code) {
+                            case 400:
+                              errorMessage = 'ไม่พบบัญชีผู้ใช้';
+                              break;
+                            case 401:
+                              errorMessage = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+                              break;
+                            case 408:
+                              errorMessage = 'หมดเวลาเชื่อมต่อ';
+                              break;
+                            default:
+                              errorMessage = 'เกิดข้อผิดพลาด';
+                              break;
+                          }
+                          final snackBar = SnackBar(
+                            content: Text(errorMessage),
+                            duration: Duration(seconds: 2),
+                          );
+
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          if (loginState.isLogged) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return HomeScreen(camera: widget.camera);
+                                },
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      child: loginState.loading
+                          ? SizedBox(
+                              child: CircularProgressIndicator(),
+                              width: 15,
+                              height: 15,
+                            )
+                          : Text("เข้าสู่ระบบ"),
+                    );
+                  })),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -11,6 +11,8 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:provider/provider.dart';
 
+import 'providers/login_provider.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final cameras = await availableCameras();
@@ -37,19 +39,19 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => VisitorsProvider()),
         ChangeNotifierProvider(create: (_) => RecordProvider()),
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'EE Record',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home:
-            // LoginScreen()
-            HomeScreen(
-          camera: camera,
-        ),
-      ),
+          debugShowCheckedModeBanner: false,
+          title: 'EE Record',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: LoginScreen(camera: camera)
+          //   HomeScreen(
+          // camera: camera,
+          // ),
+          ),
     );
   }
 }
