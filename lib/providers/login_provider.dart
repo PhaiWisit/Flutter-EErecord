@@ -1,7 +1,7 @@
-import 'dart:developer';
 import 'package:ee_record_mvvm/models/login_error.dart';
 import 'package:ee_record_mvvm/models/login_token_model.dart';
 import 'package:ee_record_mvvm/services/login_service.dart';
+import 'package:ee_record_mvvm/utils/shared_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api_status.dart';
@@ -39,6 +39,7 @@ class LoginProvider extends ChangeNotifier {
 
   login(username, password) async {
     setLoading(true);
+    // final SharedPreferences prefs = await SharedPreferences.getInstance();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var response = await LoginService.login(username, password);
     if (response is Success) {

@@ -20,12 +20,12 @@ class LoginTokenModel {
 
   factory LoginTokenModel.fromJson(Map<String, dynamic> json) =>
       LoginTokenModel(
-        accessToken: json["access_token"],
+        accessToken: json["accessToken"],
         username: json["username"],
       );
 
   Map<String, dynamic> toJson() => {
-        "access_token": accessToken,
+        "accessToken": accessToken,
         "username": username,
       };
 }

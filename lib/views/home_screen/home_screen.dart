@@ -3,6 +3,7 @@ import 'package:ee_record_mvvm/utils/app_color.dart';
 import 'package:ee_record_mvvm/utils/function.dart';
 import 'package:ee_record_mvvm/utils/navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'widgets/home_tab_active.dart';
 import 'widgets/home_tab_inactive.dart';
@@ -75,10 +76,23 @@ class HomeScreen extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'EE Record',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 30),
+                            Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'EE Record',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 30),
+                                ),
+                                // Test
+                                TextButton(
+                                    onPressed: () async {
+                                      final SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      prefs.remove('accessToken');
+                                    },
+                                    child: Text('Log out')),
+                              ],
                             ),
                             Row(
                               children: [

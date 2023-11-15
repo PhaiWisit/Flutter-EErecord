@@ -7,7 +7,6 @@ import 'package:ee_record_mvvm/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class LoginService {
-  
   static Future<Object> login(username, password) async {
     var client = http.Client();
     try {
@@ -32,12 +31,12 @@ class LoginService {
       //   return http.Response('Error', 101);
       // });
 
-      log(response.statusCode.toString());
+      log('${response.statusCode.toString()} : ${response.bodyBytes.toString()}');
       // var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
       // var uri = Uri.parse(decodedResponse['uri'] as String);
       // print(await client.get(uri));
 
-      if (SUCCESS == response.statusCode) {
+      if (SUCCESS == response.statusCode || CREATE == response.statusCode) {
         return Success(code: SUCCESS, response: response.body);
       } else if (response.statusCode == 400) {
         return Failure(code: 400, errorResponse: 'Invalid User');
