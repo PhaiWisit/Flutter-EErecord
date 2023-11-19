@@ -1,6 +1,6 @@
 # EE Record
 
-A Flutter project for record visitor contact in vilage.
+A Flutter project for record visitor contact in village.
 
 ### Screenshots
 
