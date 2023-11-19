@@ -2,11 +2,13 @@
 
 A Flutter project for record visitor contact in vilage.
 
-**Contact me:**
-- Mail: <a href="mailto:w.phai@hotmail.com">w.phai@hotmail.com</a>
-
 ### Screenshots
-<p align="center">
+
+| Login                                                                                                                                      | Home                                                                                                                                        | Detail                                                                                                                                      | Record                                                                                                                                      | Id card                                                                                                                                          | Car plate                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img src="https://github.com/PhaiWisit/Flutter-App-EErecord-with-Provider/blob/main/screenshorts/eerecord_screenshot_login.jpg?raw=true" > | <img src="https://github.com/PhaiWisit/Flutter-App-EErecord-with-Provider/blob/main/screenshorts/eerecord_screenshot_active.jpg?raw=true" > | <img src="https://github.com/PhaiWisit/Flutter-App-EErecord-with-Provider/blob/main/screenshorts/eerecord_screenshot_detail.jpg?raw=true" > | <img src="https://github.com/PhaiWisit/Flutter-App-EErecord-with-Provider/blob/main/screenshorts/eerecord_screenshot_record.jpg?raw=true" > | <img src="https://github.com/PhaiWisit/Flutter-App-EErecord-with-Provider/blob/main/screenshorts/eerecord_screenshot_take_idcard.jpg?raw=true" > | <img src="https://github.com/PhaiWisit/Flutter-App-EErecord-with-Provider/blob/main/screenshorts/eerecord_screenshot_result_plate.jpg?raw=true" > |
+
+<!-- <p align="center">
   <img src="https://github.com/PhaiWisit/Flutter-App-EErecord-with-Provider/blob/main/screenshorts/flutter_01.png?raw=true" width="350">
   <br/>
   <br/>
@@ -14,4 +16,8 @@ A Flutter project for record visitor contact in vilage.
   <br/>
   <br/>
   <img src="https://github.com/PhaiWisit/Flutter-App-EErecord-with-Provider/blob/main/screenshorts/flutter_03.jpg?raw=true" width="350">
-</p>
+</p> -->
+
+**Contact me:**
+
+- Mail: <a href="mailto:w.phai@hotmail.com">w.phai@hotmail.com</a>
