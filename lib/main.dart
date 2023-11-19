@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:ee_record_mvvm/providers/record_provider.dart';
 import 'package:ee_record_mvvm/providers/visitors_provider.dart';
+import 'package:ee_record_mvvm/utils/shared_pref.dart';
 import 'package:ee_record_mvvm/views/loading_screen/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -18,6 +19,7 @@ Future<void> main() async {
   Intl.defaultLocale = 'th';
   initializeDateFormatting();
   await _initHive();
+  PreferenceUtils.init();
 
   runApp(MyApp(camera: firstCamera));
 }

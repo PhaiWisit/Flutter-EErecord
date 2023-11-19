@@ -15,23 +15,24 @@ void onRefresh(BuildContext context) async {
       .setVisitorError(_visitorError);
 }
 
-Future<void> onUpdateStatus(
-    BuildContext context, VisitorModel visitorModel) async {
-  DateTime now = DateTime.now();
-  var dateFormat = DateFormat.yMd();
-  var timeFormat = DateFormat.Hms();
+// Error when double tap of update
+// Future<void> onUpdateStatus(
+//     BuildContext context, VisitorModel visitorModel) async {
+//   DateTime now = DateTime.now();
+//   var dateFormat = DateFormat.yMd();
+//   var timeFormat = DateFormat.Hms();
 
-  String _id = visitorModel.visitorId.toString();
-  String _dateExit = dateFormat.format(now);
-  String _timeExit = timeFormat.format(now);
+//   String _id = visitorModel.id.toString();
+//   String _dateExit = dateFormat.format(now);
+//   String _timeExit = timeFormat.format(now);
 
-  http.StreamedResponse response =
-      await VisitorServices.updateStatus(_id, _dateExit, _timeExit);
+//   http.StreamedResponse response =
+//       await VisitorServices.updateStatus(_id, _dateExit, _timeExit);
 
-  if (response.statusCode == 200) {
-    print(await response.stream.bytesToString());
-    onRefresh(context);
-  } else {
-    print(response.reasonPhrase);
-  }
-}
+//   if (response.statusCode == 200) {
+//     print(await response.stream.bytesToString());
+//     onRefresh(context);
+//   } else {
+//     print(response.reasonPhrase);
+//   }
+// }

@@ -38,10 +38,10 @@ class _HomeTimeActiveState extends State<HomeTimeActive> {
 
   List _timeActive(int index) {
     DateTime now = DateTime.now();
-    DateTime timeEntry = DateFormat("dd/MM/yyyy HH:mm:ss").parse(
-        widget.visitorsViewModel.visitorActive[index].visitorDateEntry +
-            ' ' +
-            widget.visitorsViewModel.visitorActive[index].visitorTimeEntry);
+    DateTime visitorEnter =
+        widget.visitorsViewModel.visitorActive[index].visitorEnter;
+    String date = DateFormat("dd/MM/yyyy HH:mm:ss").format(visitorEnter);
+    DateTime timeEntry = DateFormat("dd/MM/yyyy HH:mm:ss").parse(date);
 
     Duration diff = now.difference(timeEntry);
     return _printDuration(diff);

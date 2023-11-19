@@ -2,7 +2,10 @@ import 'package:ee_record_mvvm/components/loading_widget.dart';
 import 'package:ee_record_mvvm/components/visitor_detail_time_active.dart';
 import 'package:ee_record_mvvm/utils/app_color.dart';
 import 'package:ee_record_mvvm/providers/visitors_provider.dart';
+import 'package:ee_record_mvvm/utils/constants.dart';
+import 'package:ee_record_mvvm/utils/shared_pref.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -141,6 +144,13 @@ class VisitorDetailScreen extends StatelessWidget {
   }
 
   Widget container_datetime(VisitorsProvider visitorsProvider) {
+    DateTime visitorEnter = visitorsProvider.selectedVisitor.visitorEnter;
+    String dateEn = DateFormat('dd/MM/yyyy').format(visitorEnter);
+    String timeEn = DateFormat('HH:mm').format(visitorEnter);
+
+    DateTime visitorExit = visitorsProvider.selectedVisitor.visitorExit;
+    String dateEx = DateFormat('dd/MM/yyyy').format(visitorExit);
+    String timeEx = DateFormat('HH:mm').format(visitorExit);
     return SizedBox(
       height: 120,
       child: Row(
@@ -167,12 +177,12 @@ class VisitorDetailScreen extends StatelessWidget {
                                     .selectedVisitor.visitorStatus),
                               ),
                             ),
-                            SizedBox(
-                                height: 30,
-                                child: VisitorDetailTimeActive(
-                                  visitorModel:
-                                      visitorsProvider.selectedVisitor,
-                                ))
+                            // SizedBox(
+                            //     height: 30,
+                            //     child: VisitorDetailTimeActive(
+                            //       visitorModel:
+                            //           visitorsProvider.selectedVisitor,
+                            //     ))
                           ],
                         ),
                       ),
@@ -180,12 +190,7 @@ class VisitorDetailScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("เข้า " +
-                                visitorsProvider
-                                    .selectedVisitor.visitorDateEntry +
-                                " " +
-                                visitorsProvider
-                                    .selectedVisitor.visitorTimeEntry)
+                            Text('เข้า : วันที่ $dateEn เวลา $timeEn')
                           ],
                         ),
                       ),
@@ -193,15 +198,11 @@ class VisitorDetailScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            visitorsProvider.selectedVisitor.visitorDateExit ==
-                                    ''
-                                ? Text('ยังอยู่ในหมู่บ้าน')
-                                : Text("ออก " +
+                            visitorsProvider.selectedVisitor.visitorExit ==
                                     visitorsProvider
-                                        .selectedVisitor.visitorDateExit +
-                                    " " +
-                                    visitorsProvider
-                                        .selectedVisitor.visitorTimeExit)
+                                        .selectedVisitor.visitorEnter
+                                ? Text('ออก : (ยังอยู่ในหมู่บ้าน)')
+                                : Text("ออก : วันที่ $dateEx เวลา $timeEx")
                           ],
                         ),
                       ),
@@ -215,6 +216,9 @@ class VisitorDetailScreen extends StatelessWidget {
   }
 
   Widget container_idcard(VisitorsProvider visitorsProvider) {
+    PreferenceUtils.init();
+    String accessToken = PreferenceUtils.getString('accessToken');
+
     return SizedBox(
       height: 180,
       child: Row(
@@ -239,8 +243,9 @@ class VisitorDetailScreen extends StatelessWidget {
                           color: color1White,
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                       child: CachedNetworkImage(
-                        imageUrl: visitorsProvider
-                            .selectedVisitor.visitorImagePathIdCard,
+                        imageUrl:
+                            "$NEST_LOCAL_HOST${visitorsProvider.selectedVisitor.visitorImagePathIdCard}",
+                        httpHeaders: {"Authorization": "Bearer $accessToken"},
                         placeholder: (context, url) => LoadingWidget(
                           isImage: true,
                         ),
@@ -258,6 +263,9 @@ class VisitorDetailScreen extends StatelessWidget {
   }
 
   Widget container_plate(VisitorsProvider visitorsProvider) {
+    PreferenceUtils.init();
+    String accessToken = PreferenceUtils.getString('accessToken');
+
     return SizedBox(
       height: 180,
       child: Row(
@@ -279,8 +287,9 @@ class VisitorDetailScreen extends StatelessWidget {
                           color: color1White,
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                       child: CachedNetworkImage(
-                        imageUrl: visitorsProvider
-                            .selectedVisitor.visitorImagePathCarRegis,
+                        imageUrl:
+                            "$NEST_LOCAL_HOST${visitorsProvider.selectedVisitor.visitorImagePathPalte}",
+                        httpHeaders: {"Authorization": "Bearer $accessToken"},
                         placeholder: (context, url) => LoadingWidget(
                           isImage: true,
                         ),

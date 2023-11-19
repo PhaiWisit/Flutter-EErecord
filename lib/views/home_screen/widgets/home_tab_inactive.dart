@@ -6,6 +6,7 @@ import 'package:ee_record_mvvm/utils/function.dart';
 import 'package:ee_record_mvvm/utils/navigation.dart';
 import 'package:ee_record_mvvm/providers/visitors_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HomeTabInactive extends StatelessWidget {
@@ -54,6 +55,17 @@ class HomeTabInactive extends StatelessWidget {
       {required BuildContext context,
       required int index,
       required VisitorsProvider visitorsViewModel}) {
+    DateTime visitorEnter =
+        visitorsViewModel.visitorInactive[index].visitorEnter;
+    String date = DateFormat('dd/MM/yyyy').format(visitorEnter);
+    String time = DateFormat('HH:mm').format(visitorEnter);
+
+    DateTime visitorExit = visitorsViewModel.visitorInactive[index].visitorExit;
+    String dateEx = DateFormat('dd/MM/yyyy').format(visitorExit);
+    String timeEx = DateFormat('HH:mm').format(visitorExit);
+
+    VisitorModel visitorModel = visitorsViewModel.visitorInactive[index];
+
     return Card(
       child: Container(
         decoration: BoxDecoration(
@@ -61,10 +73,45 @@ class HomeTabInactive extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(4))),
         child: InkWell(
           onTap: () {
-            VisitorModel visitorModel =
-                visitorsViewModel.visitorInactive[index];
             visitorsViewModel.setSelectedVisitor(visitorModel);
             openVisitorDetialScreen(context);
+          },
+          onLongPress: () {
+            visitorsViewModel.setSelectedVisitor(visitorModel);
+            showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                      title: Row(
+                        children: [
+                          Icon(
+                            Icons.delete_forever,
+                            size: 50,
+                          ),
+                          Text('ลบการบันทึก'),
+                        ],
+                      ),
+                      content: Text(
+                          'ต้องการลบรายการ${visitorsViewModel.selectedVisitor.visitorContactMatter} บ้านเลขที่ ${visitorsViewModel.selectedVisitor.visitorHouseNumber} หรือไม่ ?'),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            visitorsViewModel.onDeleteVisitor(
+                                visitorsViewModel.selectedVisitor.id);
+
+                            Navigator.pop(context);
+                            visitorsViewModel.onRefresh();
+                          },
+                          child: Text('ตกลง'),
+                          style: ElevatedButton.styleFrom(
+                            primary: const Color.fromARGB(255, 240, 110, 100),
+                            onPrimary: Colors.white,
+                          ),
+                        ),
+                        ElevatedButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('ยกเลิก'))
+                      ],
+                    ));
           },
           splashColor: Color.fromARGB(255, 245, 245, 245),
           child: SizedBox(
@@ -167,22 +214,14 @@ class HomeTabInactive extends StatelessWidget {
                                               Expanded(
                                                 child: Row(
                                                   children: [
-                                                    Text(' วันที่ ' +
-                                                        visitorsViewModel
-                                                            .visitorInactive[
-                                                                index]
-                                                            .visitorDateEntry)
+                                                    Text(' วันที่ ' + date)
                                                   ],
                                                 ),
                                               ),
                                               Expanded(
                                                 child: Row(
                                                   children: [
-                                                    Text(' เวลา ' +
-                                                        visitorsViewModel
-                                                            .visitorInactive[
-                                                                index]
-                                                            .visitorTimeEntry)
+                                                    Text(' เวลา ' + time)
                                                   ],
                                                 ),
                                               )
@@ -203,22 +242,14 @@ class HomeTabInactive extends StatelessWidget {
                                               Expanded(
                                                 child: Row(
                                                   children: [
-                                                    Text('วันที่ ' +
-                                                        visitorsViewModel
-                                                            .visitorInactive[
-                                                                index]
-                                                            .visitorDateExit)
+                                                    Text('วันที่ ' + dateEx)
                                                   ],
                                                 ),
                                               ),
                                               Expanded(
                                                 child: Row(
                                                   children: [
-                                                    Text('เวลา ' +
-                                                        visitorsViewModel
-                                                            .visitorInactive[
-                                                                index]
-                                                            .visitorTimeExit)
+                                                    Text('เวลา ' + timeEx)
                                                   ],
                                                 ),
                                               )

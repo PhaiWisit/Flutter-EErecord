@@ -621,17 +621,17 @@ class _RecordScreenState extends State<RecordScreen> {
       );
     } else {
       VisitorModel visitorModel = VisitorModel(
-          visitorId: 0,
+          id: '0',
           visitorStatus: 'active',
-          visitorHouseNumber: int.parse(_houseNumber),
+          visitorHouseNumber: _houseNumber,
           visitorContactMatter: _contactMatter,
           visitorVehicleType: _vehicleType,
-          visitorDateEntry: _date,
-          visitorTimeEntry: _time,
-          visitorDateExit: '',
-          visitorTimeExit: '',
+          visitorEnter: DateTime.now(),
+          visitorUpdate: DateTime.now(),
+          visitorExit: DateTime.now(),
+          // visitorTimeExit: '',
           visitorImagePathIdCard: _imagePathIdCard,
-          visitorImagePathCarRegis: _imagePathCarRegis);
+          visitorImagePathPalte: _imagePathCarRegis);
 
       var recordProvider = Provider.of<RecordProvider>(context, listen: false);
       await recordProvider.uploadAll(visitorModel);

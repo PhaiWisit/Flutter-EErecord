@@ -10,7 +10,7 @@ class LoginService {
   static Future<Object> login(username, password) async {
     var client = http.Client();
     try {
-      var postUri = Uri.parse(NEST_LOCAL_SERVER + NEST_LOGIN);
+      var postUri = Uri.parse(NEST_LOCAL_HOST + NEST_LOGIN);
       var response = await http
           .post(postUri,
               headers: {"Content-Type": "application/json"},
@@ -31,7 +31,7 @@ class LoginService {
       //   return http.Response('Error', 101);
       // });
 
-      log('${response.statusCode.toString()} : ${response.bodyBytes.toString()}');
+      // log('${response.statusCode.toString()} : ${response.bodyBytes.toString()}');
       // var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
       // var uri = Uri.parse(decodedResponse['uri'] as String);
       // print(await client.get(uri));

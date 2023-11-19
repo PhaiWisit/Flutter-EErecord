@@ -36,7 +36,6 @@ class TakePictureScreenLicensePlateState
       widget.camera,
       ResolutionPreset.medium,
     );
-
     _initializeControllerFuture = _controller.initialize();
   }
 
@@ -110,6 +109,7 @@ class TakePictureScreenLicensePlateState
         onPressed: () async {
           try {
             await _initializeControllerFuture;
+            _controller.setFlashMode(FlashMode.off);
             final image = await _controller.takePicture();
             await Navigator.of(context)
                 .push(

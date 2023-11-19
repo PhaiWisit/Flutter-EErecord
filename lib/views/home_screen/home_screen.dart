@@ -1,9 +1,17 @@
+import 'dart:developer';
+
 import 'package:camera/camera.dart';
+import 'package:ee_record_mvvm/providers/login_provider.dart';
 import 'package:ee_record_mvvm/utils/app_color.dart';
+import 'package:ee_record_mvvm/utils/constants.dart';
 import 'package:ee_record_mvvm/utils/function.dart';
 import 'package:ee_record_mvvm/utils/navigation.dart';
+import 'package:ee_record_mvvm/utils/shared_pref.dart';
+import 'package:ee_record_mvvm/views/login_screen/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import 'widgets/home_tab_active.dart';
 import 'widgets/home_tab_inactive.dart';
@@ -63,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(15.0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(
                             height: 80,
@@ -77,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   'EE Record',
@@ -90,19 +98,34 @@ class HomeScreen extends StatelessWidget {
                                       final SharedPreferences prefs =
                                           await SharedPreferences.getInstance();
                                       prefs.remove('accessToken');
+                                      prefs.remove('username');
+                                      prefs.remove('villageName');
+
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return LoginScreen(camera: camera);
+                                          },
+                                        ),
+                                      );
                                     },
                                     child: Text('Log out')),
                               ],
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  'ระบบบันทึกข้อมูลผู้เข้า-ออกหมู่บ้าน',
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                              ],
+                            Consumer<LoginProvider>(
+                              builder: (BuildContext context,
+                                  LoginProvider value, Widget? child) {
+                                String username =
+                                    PreferenceUtils.getString('username');
+                                return Row(children: [
+                                  Text(
+                                    'ผู้ใช้งาน : $username',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  ),
+                                ]);
+                              },
                             )
                           ],
                         )
@@ -136,7 +159,7 @@ class HomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            onPressed: () {
+            onPressed: () async {
               openRegisterScreen(context, camera);
             },
             child: Row(

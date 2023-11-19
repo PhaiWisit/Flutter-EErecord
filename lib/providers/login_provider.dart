@@ -1,7 +1,8 @@
+import 'dart:developer';
+
 import 'package:ee_record_mvvm/models/login_error.dart';
 import 'package:ee_record_mvvm/models/login_token_model.dart';
 import 'package:ee_record_mvvm/services/login_service.dart';
-import 'package:ee_record_mvvm/utils/shared_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api_status.dart';
@@ -10,7 +11,7 @@ class LoginProvider extends ChangeNotifier {
   bool _loading = false;
   bool _isLogged = false;
   LoginTokenModel _loginTokenModel =
-      LoginTokenModel(accessToken: '0', username: '0');
+      LoginTokenModel(accessToken: '0', username: '0', villageName: '0');
   LoginError _loginError = LoginError(code: 0, massage: 'error');
 
   bool get loading => _loading;
@@ -44,14 +45,13 @@ class LoginProvider extends ChangeNotifier {
     var response = await LoginService.login(username, password);
     if (response is Success) {
       String rawRes = response.response.toString();
-      if (rawRes.isNotEmpty) {
-        rawRes = rawRes.substring(0, rawRes.length - 1);
-      }
-      String rawJson = "$rawRes,\"username\" : \"$username\"}";
-      LoginTokenModel loginToken = LoginTokenModel.fromRawJson(rawJson);
+      LoginTokenModel loginToken = LoginTokenModel.fromRawJson(rawRes);
       setLoginToken(loginToken);
 
       await prefs.setString('accessToken', loginToken.accessToken);
+      await prefs.setString('username', loginToken.username);
+      await prefs.setString('villageName', loginToken.villageName);
+
       // String? accessToken = '0';
       // accessToken = prefs.getString('accessToken');
       // log(accessToken!);

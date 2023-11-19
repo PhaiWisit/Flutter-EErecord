@@ -103,7 +103,8 @@ class TakePictureIdCardScreenState extends State<TakePictureIdCardScreen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: !flash_status ? Colors.white : Colors.amber),
+                            backgroundColor:
+                                !flash_status ? Colors.white : Colors.amber),
                         child: Text(
                           "Flash",
                           style: TextStyle(
@@ -127,6 +128,7 @@ class TakePictureIdCardScreenState extends State<TakePictureIdCardScreen> {
         onPressed: () async {
           try {
             await _initializeControllerFuture;
+            _controller.setFlashMode(FlashMode.off);
 
             final image = await _controller.takePicture();
 

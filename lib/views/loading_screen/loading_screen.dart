@@ -19,12 +19,11 @@ class LoadingScreen extends StatelessWidget {
   Future<void> getToken(BuildContext context, LoginProvider loginState) async {
     Future.delayed(const Duration(milliseconds: 2000), () async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? accessToken = '0';
+      String accessToken = '0';
       accessToken = prefs.getString('accessToken') ?? '0';
-      log(accessToken);
 
       if (accessToken != '0') {
-        var uri = Uri.parse(NEST_LOCAL_SERVER + NEST_PROFILE);
+        var uri = Uri.parse(NEST_LOCAL_HOST + NEST_PROFILE);
         var response = await http.get(
           uri,
           headers: {"Authorization": "Bearer $accessToken"},

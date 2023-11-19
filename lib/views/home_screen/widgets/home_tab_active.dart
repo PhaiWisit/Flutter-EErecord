@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:ee_record_mvvm/components/app_error.dart';
 import 'package:ee_record_mvvm/components/app_loading.dart';
 import 'package:ee_record_mvvm/models/visitor_list_model.dart';
+import 'package:ee_record_mvvm/services/visitor_service.dart';
 import 'package:ee_record_mvvm/utils/app_color.dart';
 import 'package:ee_record_mvvm/utils/function.dart';
 import 'package:ee_record_mvvm/utils/navigation.dart';
 import 'package:ee_record_mvvm/providers/visitors_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'home_time_active.dart';
@@ -57,6 +61,12 @@ class HomeTabActive extends StatelessWidget {
       {required BuildContext context,
       required int index,
       required VisitorsProvider visitorsViewModel}) {
+    DateTime visitorEnter = visitorsViewModel.visitorActive[index].visitorEnter;
+    String date = DateFormat('dd/MM/yyyy').format(visitorEnter);
+    String time = DateFormat('HH:mm').format(visitorEnter);
+
+    VisitorModel visitorModel = visitorsViewModel.visitorActive[index];
+
     return Card(
       child: Container(
         decoration: BoxDecoration(
@@ -64,9 +74,45 @@ class HomeTabActive extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(4))),
         child: InkWell(
           onTap: () {
-            VisitorModel visitorModel = visitorsViewModel.visitorActive[index];
             visitorsViewModel.setSelectedVisitor(visitorModel);
             openVisitorDetialScreen(context);
+          },
+          onLongPress: () {
+            visitorsViewModel.setSelectedVisitor(visitorModel);
+            showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                      title: Row(
+                        children: [
+                          Icon(
+                            Icons.delete_forever,
+                            size: 50,
+                          ),
+                          Text('ลบการบันทึก'),
+                        ],
+                      ),
+                      content: Text(
+                          'ต้องการลบรายการ${visitorsViewModel.selectedVisitor.visitorContactMatter} บ้านเลขที่ ${visitorsViewModel.selectedVisitor.visitorHouseNumber} หรือไม่ ?'),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            visitorsViewModel.onDeleteVisitor(
+                                visitorsViewModel.selectedVisitor.id);
+
+                            Navigator.pop(context);
+                            visitorsViewModel.onRefresh();
+                          },
+                          child: Text('ตกลง'),
+                          style: ElevatedButton.styleFrom(
+                            primary: const Color.fromARGB(255, 240, 110, 100),
+                            onPrimary: Colors.white,
+                          ),
+                        ),
+                        ElevatedButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('ยกเลิก'))
+                      ],
+                    ));
           },
           splashColor: Color.fromARGB(255, 245, 245, 245),
           child: SizedBox(
@@ -159,22 +205,14 @@ class HomeTabActive extends StatelessWidget {
                                               Expanded(
                                                 child: Row(
                                                   children: [
-                                                    Text('วันที่ ' +
-                                                        visitorsViewModel
-                                                            .visitorActive[
-                                                                index]
-                                                            .visitorDateEntry)
+                                                    Text('วันที่ ' + date)
                                                   ],
                                                 ),
                                               ),
                                               Expanded(
                                                 child: Row(
                                                   children: [
-                                                    Text('เวลา ' +
-                                                        visitorsViewModel
-                                                            .visitorActive[
-                                                                index]
-                                                            .visitorTimeEntry)
+                                                    Text('เวลา ' + time)
                                                   ],
                                                 ),
                                               )
@@ -191,18 +229,32 @@ class HomeTabActive extends StatelessWidget {
                                                 border: Border.all(
                                                     color: color1DeepGrey,
                                                     width: 3)),
-                                            child: TextButton(
-                                              child: const Text(
-                                                'สำเร็จ',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16),
-                                              ),
-                                              onPressed: () {
-                                                onUpdateStatus(
-                                                    context,
-                                                    visitorsViewModel
-                                                        .visitorActive[index]);
+                                            child: Consumer<VisitorsProvider>(
+                                              builder: (BuildContext context,
+                                                  VisitorsProvider
+                                                      visitorsProvider,
+                                                  Widget? child) {
+                                                return TextButton(
+                                                  child: visitorsProvider
+                                                          .loading
+                                                      ? Apploading()
+                                                      : Text(
+                                                          'สำเร็จ',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 16),
+                                                        ),
+                                                  onPressed: () {
+                                                    visitorsProvider.loading
+                                                        ? null
+                                                        : visitorsProvider
+                                                            .onUpdateStatus(
+                                                                visitorsProvider
+                                                                        .visitorActive[
+                                                                    index]);
+                                                  },
+                                                );
                                               },
                                             ),
                                           ),
